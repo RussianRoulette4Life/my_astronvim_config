@@ -32,6 +32,69 @@
 --     dotfiles = false,
 --   },
 -- })
+local opts = {
+  highlight_hovered_item = true,
+  show_guides = true,
+  auto_preview = false,
+  position = 'right',
+  relative_width = true,
+  width = 25,
+  auto_close = true,
+  show_numbers = false,
+  show_relative_numbers = true,
+  show_symbol_details = true,
+  preview_bg_highlight = 'Pmenu',
+  autofold_depth = nil,
+  auto_unfold_hover = true,
+  fold_markers = { '', '' },
+  wrap = false,
+  keymaps = { -- These keymaps can be a string or a table for multiple keys
+    close = { "<Esc>", "q" },
+    goto_location = "<Cr>",
+    focus_location = "o",
+    hover_symbol = "<C-space>",
+    toggle_preview = "K",
+    rename_symbol = "r",
+    code_actions = "a",
+    fold = "h",
+    unfold = "l",
+    fold_all = "W",
+    unfold_all = "E",
+    fold_reset = "R",
+  },
+  lsp_blacklist = {},
+  symbol_blacklist = {},
+  symbols = {
+    File = { icon = "", hl = "TSURI" },
+    Module = { icon = "", hl = "TSNamespace" },
+    Namespace = { icon = "", hl = "TSNamespace" },
+    Package = { icon = "", hl = "TSNamespace" },
+    Class = { icon = "𝓒", hl = "TSType" },
+    Method = { icon = "ƒ", hl = "TSMethod" },
+    Property = { icon = "", hl = "TSMethod" },
+    Field = { icon = "", hl = "TSField" },
+    Constructor = { icon = "", hl = "TSConstructor" },
+    Enum = { icon = "ℰ", hl = "TSType" },
+    Interface = { icon = "ﰮ", hl = "TSType" },
+    Function = { icon = "", hl = "TSFunction" },
+    Variable = { icon = "", hl = "TSConstant" },
+    Constant = { icon = "", hl = "TSConstant" },
+    String = { icon = "𝓐", hl = "TSString" },
+    Number = { icon = "#", hl = "TSNumber" },
+    Boolean = { icon = "⊨", hl = "TSBoolean" },
+    Array = { icon = "", hl = "TSConstant" },
+    Object = { icon = "⦿", hl = "TSType" },
+    Key = { icon = "🔐", hl = "TSType" },
+    Null = { icon = "NULL", hl = "TSType" },
+    EnumMember = { icon = "", hl = "TSField" },
+    Struct = { icon = "𝓢", hl = "TSType" },
+    Event = { icon = "🗲", hl = "TSType" },
+    Operator = { icon = "+", hl = "TSOperator" },
+    TypeParameter = { icon = "𝙏", hl = "TSParameter" }
+  }
+}
+
+require("symbols-outline").setup(opts)
 local config = {
 
   -- Configure AstroNvim updates
@@ -237,16 +300,18 @@ local config = {
     n = {
       -- second key is the lefthand side of the map
       -- mappings seen under group name "Buffer"
-      ["<leader>tn"] = { "<cmd>tabnew<cr>", desc = "New tab" },
+      -- ["<leader>tn"] = { "<cmd>tabnew<cr>", desc = "New tab" },
       -- ["<leader>tx"] = { "<cmd>tabclose<cr>", desc = "Close tab" },
       -- ["<leader>ts"] = { "<cmd>tabn<cr>", desc = "Next tab" },
       ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
       ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
       ["<C-f>"] = { "<cmd>Neotree<cr>", desc = "Open Neotree" },
-
+      ["<leader>fg"] = { "<cmd>Telescope grep_string<cr>", desc = "Grep search through files" },
+      ["<leader>fj"] = { "<cmd>Telescope jumplist<cr>", desc = "Telescope jumplist" },
+      ["<leader>lo"] = { "<cmd>SymbolsOutline<cr>", desc = "Show symblos, pretty ones ;)" },
       -- quick save
-      -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+      ["<C-s>"] = { ":w!<cr>", desc = "Save File" }, -- change description but the same command
     },
     t = {
       -- setting a mapping to false will disable it
@@ -257,8 +322,10 @@ local config = {
   -- Configure plugins
   plugins = {
     init = {
+      "simrat39/symbols-outline.nvim",
       "sainnhe/everforest",
       "terrortylor/nvim-comment",
+      "nvim-telescope/telescope-symbols.nvim",
       -- You can disable default plugins as follows:
       -- ["goolord/alpha-nvim"] = { disable = true },
 
@@ -339,6 +406,7 @@ local config = {
       path = 250,
     },
   },
+  ["<leader>fg"] = { "<cmd>Telescope grep_string<cr>", desc = "grep search through files" },
 
   -- Customize Heirline options
   heirline = {
