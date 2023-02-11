@@ -4,34 +4,6 @@
 -- You can think of a Lua "table" as a dictionary like data structure the
 -- normal format is "key = value". These also handle array like data structures
 -- where a value with no key simply has an implicit numeric key
--- examples for your init.lua
-
--- disable netrw at the very start of your init.lua (strongly advised)
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
---
--- -- set termguicolors to enable highlight groups
--- vim.opt.termguicolors = true
---
--- -- OR setup with some options
--- require("nvim-tree").setup({
---   sort_by = "case_sensitive",
---   view = {
---     relativenumber = true,
---     adaptive_size = true,
---     mappings = {
---       list = {
---         { key = "u", action = "dir_up" },
---       },
---     },
---   },
---   renderer = {
---     group_empty = true,
---   },
---   filters = {
---     dotfiles = false,
---   },
--- })
 local opts = {
   highlight_hovered_item = true,
   show_guides = true,
@@ -95,12 +67,13 @@ local opts = {
 }
 
 require("symbols-outline").setup(opts)
+require("nvim-surround").setup()
 local config = {
 
   -- Configure AstroNvim updates
   updater = {
     remote = "origin", -- remote to use
-    channel = "nightly", -- "stable" or "nightly"
+    channel = "stable", -- "stable" or "nightly"
     version = "latest", -- "latest", tag name, or regex search like "v1.*" to only do updates before v2 (STABLE ONLY)
     branch = "main", -- branch name (NIGHTLY ONLY)
     commit = nil, -- commit hash (NIGHTLY ONLY)
@@ -322,8 +295,10 @@ local config = {
   -- Configure plugins
   plugins = {
     init = {
+      "hrsh7th/vim-vsnip",
       "simrat39/symbols-outline.nvim",
       "sainnhe/everforest",
+      "kylechui/nvim-surround",
       "terrortylor/nvim-comment",
       "nvim-telescope/telescope-symbols.nvim",
       -- You can disable default plugins as follows:
@@ -406,7 +381,6 @@ local config = {
       path = 250,
     },
   },
-  ["<leader>fg"] = { "<cmd>Telescope grep_string<cr>", desc = "grep search through files" },
 
   -- Customize Heirline options
   heirline = {
